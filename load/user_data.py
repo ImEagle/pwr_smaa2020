@@ -3,6 +3,8 @@ from os import listdir
 from os.path import isfile, join, split
 from typing import List
 
+BASE_YEAR = 2018
+
 _BIRTH_YEAR = "BirthYear: "
 _GENDER = "Gender: "
 _PARKINSONS = "Parkinsons: "
@@ -22,11 +24,11 @@ _FILE_USER = "User_"
 @dataclass
 class UserData:
     id: str
-    birthday_year: str
+    birthday_year: int
     gender: str
     parkinsons: bool
     tremors: bool
-    diagnosis_year: str
+    diagnosis_year: int
     sided: str
     updrs: str
     impact: str
@@ -34,6 +36,8 @@ class UserData:
     da: bool
     maob: bool
     other: bool
+    age: int
+    diagnosis_age: int
 
 
 def _load_from_file(full_file_path: str) -> UserData:
@@ -46,16 +50,36 @@ def _load_from_file(full_file_path: str) -> UserData:
 
             if line.startswith(_BIRTH_YEAR):
                 birthday_year = line[len(_BIRTH_YEAR):]
+
+                try:
+                    birthday_year = int(birthday_year)
+                except ValueError:
+                    birthday_year = 0
+
+                age = 0
+                if birthday_year > 0:
+                    age = BASE_YEAR - birthday_year
+
             elif line.startswith(_GENDER):
                 gender = line[len(_GENDER):]
             elif line.startswith(_PARKINSONS):
                 parkinsons = line[len(_PARKINSONS):]
-                parkinsons = bool(parkinsons)
+                parkinsons = parkinsons == "True"
             elif line.startswith(_TREMORS):
                 tremors = line[len(_TREMORS):]
                 tremors = bool(tremors)
             elif line.startswith(_DIAGNOSIS_YEAR):
                 diagnosis_year = line[len(_DIAGNOSIS_YEAR):]
+
+                try:
+                    diagnosis_year = int(diagnosis_year)
+                except ValueError:
+                    diagnosis_year = 0
+
+                diagnosis_age = 0
+                if diagnosis_age > 0:
+                    diagnosis_age = BASE_YEAR - diagnosis_age
+
             elif line.startswith(_SIDED):
                 sided = line[len(_SIDED):]
             elif line.startswith(_UPDRS):
@@ -88,7 +112,9 @@ def _load_from_file(full_file_path: str) -> UserData:
             levadopa,
             da,
             maob,
-            other
+            other,
+            age,
+            diagnosis_age
         )
 
     return u
