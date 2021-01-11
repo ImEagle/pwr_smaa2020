@@ -23,7 +23,7 @@ _FILE_USER = "User_"
 
 @dataclass
 class UserData:
-    id: str
+    user_id: str
     birthday_year: int
     gender: str
     parkinsons: bool
@@ -88,7 +88,7 @@ def _load_from_file(full_file_path: str) -> UserData:
                 impact = line[len(_IMPACT):]
             elif line.startswith(_LEVADOPA):
                 levadopa = line[len(_LEVADOPA):]
-                levadopa = bool(levadopa)
+                levadopa = levadopa == "True"
             elif line.startswith(_DA):
                 da = line[len(_DA):]
                 da = bool(da)

@@ -1,3 +1,4 @@
+import os
 import pickle
 from dataclasses import asdict
 from typing import List, Dict
@@ -11,8 +12,10 @@ from render import render_age, render_gender, render_diagnosis_age, render_impac
 
 
 def load_raw_data() -> (List[UserData], Dict[str, List[Keystroke]]):
-    user_data_dir = "/Users/eagle/pwr_smaa/archive/Archived-users/Archived users"
-    keystroke_data_dir = "/Users/eagle/pwr_smaa/archive/Archived-Data/Tappy Data"
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+
+    user_data_dir = f"{dir_path}/archive/Archived-users/Archived users"
+    keystroke_data_dir = f"{dir_path}/archive/Archived-Data/Tappy Data"
 
     users_data = load_user_data(user_data_dir)
     keystroke_data = load_keystroke_data(keystroke_data_dir)
@@ -47,7 +50,7 @@ def get_keystrokes_df_as_list(keystrokes_dataframe: Dict[str, List[pandas.DataFr
 
 
 def load_data():
-    load_cached = False
+    load_cached = True
 
     if load_cached:
         with open("users_pickle", "rb") as f_u:
